@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import BerandaView from "./BerandaView";
 import { useSearchParams } from "react-router-dom";
 import { useCallback } from "react";
+import { data } from "autoprefixer";
 import { useReducer } from "react";
 
 const nilaiDefault = {
@@ -12,21 +13,21 @@ const nilaiDefault = {
   loading: true,
 };
 
-const reducer = (state, action) =>{
-  switch (action.type){
+const reducer = (state, action) => {
+  switch (action.type) {
     case "FECTH_BERHASIL":
-      return{
+      return {
         ...state,
-        data:action.payload,
+        data: action.payload,
         loading: false,
       };
-      case "SET_FILTER" :
-        return{
-          ...state,
-          filterData:action.payload
-        };
-      default:
-        throw new Error("error di case")   
+    case "SET_FILTER":
+      return {
+        ...state,
+        filterData: action.payload,
+      };
+    default:
+      throw new Error("error di case");
   }
 };
 
@@ -43,7 +44,7 @@ const Beranda = () => {
     );
     const data = await response.data;
     // setProduct(data);
-    dispatch({type:"FECTH_BERHASIL", payload:data})
+    dispatch({ type: "FECTH_BERHASIL", payload: data });
   };
 
   useEffect(() => {
@@ -55,22 +56,23 @@ const Beranda = () => {
     // ambilProduct();
   }, [cariProduct]);
 
-  const ubahCari = useCallback(async (input) => {
-    setCari({ cariproduct: input });
+  const ubahCari = useCallback(
+    async (input) => {
+      setCari({ cariproduct: input });
 
-    const response = await axios.get(
-      "https://restaurant-api.dicoding.dev/search?q=" + cariProduct
-    );
-    const data = await response.data;
-    // setHasilCari(data);
-    dispatch({ type: "SET_FILTER", payload:data});
-  },
-  [cariProduct]
-)
+      const response = await axios.get(
+        "https://restaurant-api.dicoding.dev/search?q=" + cariProduct
+      );
+      const data = await response.data;
+      // setHasilCari(data);
+      dispatch({ type: "SET_FILTER", payload: data });
+    },
+    [cariProduct]
+  );
 
-  const hasilFilter = cariProduct ? state.filterData : state.data;
+  const hasilFilter = cariProduct ? state.filterData : state.data ;
 
-console.log(state)
+  console.log(state);
 
   return (
     <BerandaView

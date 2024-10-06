@@ -1,9 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from "react";
+import ThemeContext from "../context/ThemeContext";
+import { Link } from "react-router-dom";
 
 const BerandaView = ({ ubahCari, cariProduct, hasilCari, hasilFilter }) => {
+    const [getTheme] = useContext(ThemeContext); // Mengambil tema aktif dari ThemeContext
+
+    // Helper untuk class tema
+    const themeBgClass = getTheme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-black';
+    const cardBgClass = getTheme === 'dark' ? 'bg-gray-800' : 'bg-white';
+
     return (
-        <div className="beranda dark:bg-black">
+        <div className={`beranda ${themeBgClass}`}>
             <label className="input input-bordered flex items-center gap-2 mb-4">
                 <input
                     type="text"
@@ -18,7 +25,7 @@ const BerandaView = ({ ubahCari, cariProduct, hasilCari, hasilFilter }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                 {hasilFilter?.restaurants?.map((product) => (
-                    <div className="card bg-base-100 shadow-md border-none" key={product?.id}>
+                    <div className={`card shadow-md border-none ${cardBgClass}`} key={product?.id}>
                         <figure>
                             <img
                                 src={'https://restaurant-api.dicoding.dev/images/small/' + product.pictureId}
